@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Previsor Euromilhões - Sobre</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-star-half-alt me-2"></i>
+                Previsor Euromilhões
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/estatisticas"><i class="fas fa-chart-bar me-1"></i> Estatísticas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/relatorios"><i class="fas fa-file-alt me-1"></i> Relatórios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/sobre"><i class="fas fa-info-circle me-1"></i> Sobre</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="container py-5">
+        <h1 class="mb-5 text-center">Sobre o Projeto</h1>
+        
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">O Que é o Previsor Euromilhões?</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>O Previsor Euromilhões é uma ferramenta de análise estatística que utiliza inteligência artificial para analisar os resultados históricos do Euromilhões e gerar previsões baseadas em padrões identificados.</p>
+                        <p>Este projeto foi desenvolvido como uma demonstração das capacidades de análise de dados e modelagem preditiva, combinando técnicas estatísticas com uma interface web intuitiva para visualização e interação.</p>
+                        <p class="mb-0">É importante destacar que o Euromilhões é um jogo de sorte pura, onde cada sorteio é independente dos anteriores. Nenhum método de previsão pode garantir resultados com certeza absoluta.</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0">Metodologia</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>O sistema utiliza três abordagens principais para gerar previsões:</p>
+                        
+                        <h6 class="mt-4"><i class="fas fa-chart-line me-2"></i>Método de Frequência</h6>
+                        <p>Analisa todos os sorteios históricos e prioriza números e estrelas que apareceram com maior frequência ao longo do tempo. Este método baseia-se na premissa de que alguns números tendem a aparecer mais vezes que outros em períodos longos.</p>
+                        
+                        <h6 class="mt-4"><i class="fas fa-history me-2"></i>Método de Recência</h6>
+                        <p>Foca nos sorteios mais recentes para capturar tendências atuais. Este método dá mais peso aos padrões que emergiram nos últimos sorteios, assumindo que tendências recentes podem continuar.</p>
+                        
+                        <h6 class="mt-4"><i class="fas fa-star me-2"></i>Método Híbrido</h6>
+                        <p class="mb-0">Combina os dois métodos anteriores, equilibrando a análise de longo prazo com tendências recentes. Este é geralmente o método recomendado, pois oferece uma abordagem mais balanceada.</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Dados Utilizados</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>O sistema analisa um conjunto abrangente de dados históricos do Euromilhões, incluindo:</p>
+                        <ul>
+                            <li>Números e estrelas sorteados em cada concurso</li>
+                            <li>Datas dos sorteios</li>
+                            <li>Frequência de cada número e estrela</li>
+                            <li>Padrões de paridade (números pares vs. ímpares)</li>
+                            <li>Soma dos números sorteados</li>
+                            <li>Ocorrência de números consecutivos</li>
+                            <li>Pares de números e estrelas que aparecem juntos</li>
+                        </ul>
+                        <p class="mb-0">Estes dados são processados e analisados para identificar padrões estatísticos que possam indicar tendências.</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-warning text-dark">
+                        <h5 class="mb-0">Limitações</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>É fundamental compreender as limitações deste sistema:</p>
+                        <ul>
+                            <li>O Euromilhões é um jogo de sorte pura, onde cada sorteio é independente dos anteriores</li>
+                            <li>Nenhum método de previsão pode garantir acertos com 100% de certeza</li>
+                            <li>As previsões são baseadas em padrões estatísticos e não em garantias matemáticas</li>
+                            <li>Resultados passados não garantem resultados futuros</li>
+                        </ul>
+                        <p class="mb-0">Este sistema deve ser utilizado apenas como uma ferramenta complementar, não como substituto para escolhas pessoais ou como garantia de ganhos.</p>
+                    </div>
+                </div>
+                
+                <div class="card shadow-sm">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Como Utilizar</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Para obter o máximo benefício deste sistema:</p>
+                        <ol>
+                            <li>Explore as estatísticas para compreender os padrões históricos</li>
+                            <li>Gere previsões utilizando diferentes métodos para comparação</li>
+                            <li>Consulte os relatórios detalhados para entender a metodologia</li>
+                            <li>Lembre-se que este é um projeto de demonstração e que o jogo responsável é fundamental</li>
+                        </ol>
+                        <p class="mb-0">Utilize estas previsões como uma ferramenta complementar, não como uma garantia de resultados.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="py-4 bg-dark text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>Previsor Euromilhões</h5>
+                    <p class="mb-0">Uma ferramenta de análise estatística para o Euromilhões.</p>
+                    <p class="text-muted small">
+                        <em>Nota: Este é um projeto de demonstração. Os resultados são baseados em análise estatística e não garantem ganhos.</em>
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <ul class="list-inline mb-0">
+                        <li class="list-inline-item"><a href="/" class="text-white">Início</a></li>
+                        <li class="list-inline-item"><a href="/estatisticas" class="text-white">Estatísticas</a></li>
+                        <li class="list-inline-item"><a href="/relatorios" class="text-white">Relatórios</a></li>
+                        <li class="list-inline-item"><a href="/sobre" class="text-white">Sobre</a></li>
+                    </ul>
+                    <p class="mt-2 mb-0 text-muted">© 2025 Previsor Euromilhões</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="EuroMillions Predictor - Discover the numbers most likely to appear in the next draw">
+    <meta name="theme-color" content="#1976d2">
+    <title>EuroMillions Predictor - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="/en" class="navbar-logo">EuroMillions Predictor</a>
+            </div>
+            <div class="navbar-menu">
+                <a href="/en" class="navbar-item">Home</a>
+                <a href="/en/statistics" class="navbar-item">Statistics</a>
+                <a href="/en/reports" class="navbar-item">Reports</a>
+                <a href="/en/about" class="navbar-item">About</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">EuroMillions Predictor</h1>
+                <p class="hero-description">Discover the numbers most likely to appear in the next EuroMillions draw, based on advanced statistical analysis.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToPredictor()">Generate Prediction</button>
+                    <a href="/en/statistics" class="btn btn-secondary">View Statistics</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="predictions-section">
+            <h2 class="section-title">EuroMillions Predictions</h2>
+            <div class="prediction-container">
+                <div class="prediction-form">
+                    <h3 class="form-title">Generate New Prediction</h3>
+                    <form id="prediction-form" action="/en/predict" method="post">
+                        <div class="form-group">
+                            <label for="method">Prediction Method</label>
+                            <select id="method" name="method" class="form-control">
+                                <option value="hybrid">Hybrid (Recommended)</option>
+                                <option value="frequency">Frequency-Based</option>
+                                <option value="recency">Recency-Based</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="num_predictions">Number of Predictions</label>
+                            <select id="num_predictions" name="num_predictions" class="form-control">
+                                <option value="1">1 prediction</option>
+                                <option value="3" selected>3 predictions</option>
+                                <option value="5">5 predictions</option>
+                                <option value="10">10 predictions</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Generate Prediction</button>
+                    </form>
+                </div>
+                <div id="prediction-results" class="prediction-results">
+                    <!-- Prediction results will be displayed here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 EuroMillions Predictor</p>
+        </div>
+    </footer>
+
+    <script>
+        function scrollToPredictor() {
+            document.querySelector('.prediction-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/js/service-worker.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    
+    <!-- Load language selector script -->
+    <script src="{{ url_for('static', filename='js/language-selector.js') }}"></script>
+</body>
+</html>

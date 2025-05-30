@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="{{ 'en' if lang == 'en' else 'pt' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="{{ 'EuroMillions Prediction Results' if lang == 'en' else 'Resultados da Previsão do Euromilhões' }}">
+    <meta name="theme-color" content="#1976d2">
+    <title>{{ 'EuroMillions Predictor - Results' if lang == 'en' else 'Previsor Euromilhões - Resultados' }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-brand">
+                <a href="{{ '/en' if lang == 'en' else '/' }}" class="navbar-logo">{{ 'EuroMillions Predictor' if lang == 'en' else 'Previsor Euromilhões' }}</a>
+            </div>
+            <div class="navbar-menu">
+                <a href="{{ '/en' if lang == 'en' else '/' }}" class="navbar-item">{{ 'Home' if lang == 'en' else 'Início' }}</a>
+                <a href="{{ '/en/statistics' if lang == 'en' else '/estatisticas' }}" class="navbar-item">{{ 'Statistics' if lang == 'en' else 'Estatísticas' }}</a>
+                <a href="{{ '/en/reports' if lang == 'en' else '/relatorios' }}" class="navbar-item">{{ 'Reports' if lang == 'en' else 'Relatórios' }}</a>
+                <a href="{{ '/en/about' if lang == 'en' else '/sobre' }}" class="navbar-item">{{ 'About' if lang == 'en' else 'Sobre' }}</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="predictions-section">
+            <h2 class="section-title">{{ 'EuroMillions Prediction Results' if lang == 'en' else 'Resultados da Previsão do Euromilhões' }}</h2>
+            
+            <div class="prediction-container">
+                <div class="prediction-results">
+                    <h3 class="form-title">{{ 'Generated Predictions' if lang == 'en' else 'Previsões Geradas' }}</h3>
+                    
+                    <div class="alert alert-success">
+                        <p>{{ 'Predictions successfully generated using the ' if lang == 'en' else 'Previsões geradas com sucesso usando o método ' }}
+                        {% if method == 'hybrid' %}
+                            {{ 'Hybrid method' if lang == 'en' else 'Híbrido' }}
+                        {% elif method == 'frequency' %}
+                            {{ 'Frequency-Based method' if lang == 'en' else 'Baseado em Frequência' }}
+                        {% elif method == 'recency' %}
+                            {{ 'Recency-Based method' if lang == 'en' else 'Baseado em Recência' }}
+                        {% endif %}
+                        </p>
+                    </div>
+                    
+                    {% for prediction in predictions %}
+                    <div class="result-card">
+                        <h4 class="result-title">{{ 'Prediction' if lang == 'en' else 'Previsão' }} #{{ loop.index }}</h4>
+                        
+                        <div>
+                            <p><strong>{{ 'Numbers' if lang == 'en' else 'Números' }}:</strong></p>
+                            <div class="numbers-container">
+                                {% for number in prediction.numbers %}
+                                <div class="number-ball">{{ number }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <p><strong>{{ 'Stars' if lang == 'en' else 'Estrelas' }}:</strong></p>
+                            <div class="numbers-container">
+                                {% for star in prediction.stars %}
+                                <div class="star-ball">{{ star }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="result-info">
+                            <span>{{ 'Method' if lang == 'en' else 'Método' }}: 
+                            {% if method == 'hybrid' %}
+                                {{ 'Hybrid' if lang == 'en' else 'Híbrido' }}
+                            {% elif method == 'frequency' %}
+                                {{ 'Frequency-Based' if lang == 'en' else 'Baseado em Frequência' }}
+                            {% elif method == 'recency' %}
+                                {{ 'Recency-Based' if lang == 'en' else 'Baseado em Recência' }}
+                            {% endif %}
+                            </span>
+                            <span>{{ 'Generated on' if lang == 'en' else 'Gerado em' }}: {{ now().strftime('%d/%m/%Y %H:%M') }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    <div class="mt-4">
+                        <a href="{{ '/en' if lang == 'en' else '/' }}" class="btn btn-secondary">{{ 'Generate New Prediction' if lang == 'en' else 'Gerar Nova Previsão' }}</a>
+                        <a href="{{ '/en/statistics' if lang == 'en' else '/estatisticas' }}" class="btn btn-primary">{{ 'View Statistics' if lang == 'en' else 'Ver Estatísticas' }}</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 {{ 'EuroMillions Predictor' if lang == 'en' else 'Previsor Euromilhões' }}</p>
+        </div>
+    </footer>
+
+    <!-- Carregar o script do seletor de idioma -->
+    <script src="{{ url_for('static', filename='js/language-selector.js') }}"></script>
+    
+    <script>
+        // Registrar o service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/js/service-worker.js')
+                    .then(function(registration) {
+                        console.log('{{ 'Service Worker registered successfully' if lang == 'en' else 'Service Worker registrado com sucesso' }}:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('{{ 'Service Worker registration failed' if lang == 'en' else 'Falha ao registrar o Service Worker' }}:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
