@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from datetime import datetime
+import os
 
 app = Flask(__name__)
 
@@ -87,5 +88,8 @@ def detect_language():
         return redirect('/en')
     return redirect('/')
 
+# Adicionar configuração para porta no Render.com
+port = int(os.environ.get("PORT", 5000))
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', port=port)
