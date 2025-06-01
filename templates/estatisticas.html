@@ -1,366 +1,112 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="{% if lang %}{{ lang }}{% else %}pt{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Previsor Euromilhões - Estatísticas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>{% if lang == 'en' %}EuroMillions Predictor - Statistics{% else %}Previsor Euromilhões - Estatísticas{% endif %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
+    <meta name="theme-color" content="#0066cc">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon-192x192.png') }}">
 </head>
 <body>
-    <!-- Cabeçalho -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-star-half-alt me-2"></i>
-                Previsor Euromilhões
+    <header>
+        <div class="logo">
+            <a href="{% if lang == 'en' %}/en{% else %}/{% endif %}">
+                {% if lang == 'en' %}EuroMillions Predictor{% else %}Previsor Euromilhões{% endif %}
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i> Início</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/estatisticas"><i class="fas fa-chart-bar me-1"></i> Estatísticas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/relatorios"><i class="fas fa-file-alt me-1"></i> Relatórios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sobre"><i class="fas fa-info-circle me-1"></i> Sobre</a>
-                    </li>
-                </ul>
-            </div>
         </div>
-    </nav>
+        <nav>
+            <ul>
+                <li><a href="{% if lang == 'en' %}/en{% else %}/{% endif %}">{% if lang == 'en' %}Home{% else %}Início{% endif %}</a></li>
+                <li><a href="{% if lang == 'en' %}/en/statistics{% else %}/estatisticas{% endif %}" class="active">{% if lang == 'en' %}Statistics{% else %}Estatísticas{% endif %}</a></li>
+                <li><a href="{% if lang == 'en' %}/en/reports{% else %}/relatorios{% endif %}">{% if lang == 'en' %}Reports{% else %}Relatórios{% endif %}</a></li>
+            </ul>
+        </nav>
+        <button class="language-selector" id="languageSelector">
+            🌐 {% if lang == 'en' %}EN{% else %}PT{% endif %} ▼
+        </button>
+    </header>
 
-    <!-- Conteúdo Principal -->
-    <div class="container py-5">
-        <h1 class="mb-5 text-center">Estatísticas do Euromilhões</h1>
-        
-        <!-- Tabs de Navegação -->
-        <ul class="nav nav-tabs mb-4" id="estatisticasTabs" role="tablist">
-            <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="frequencia-tab" data-bs-toggle="tab" data-bs-target="#frequencia" type="button" role="tab" aria-controls="frequencia" aria-selected="true">
-                    <i class="fas fa-chart-bar me-2"></i>Frequência
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="padroes-tab" data-bs-toggle="tab" data-bs-target="#padroes" type="button" role="tab" aria-controls="padroes" aria-selected="false">
-                    <i class="fas fa-puzzle-piece me-2"></i>Padrões
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="visualizacoes-tab" data-bs-toggle="tab" data-bs-target="#visualizacoes" type="button" role="tab" aria-controls="visualizacoes" aria-selected="false">
-                    <i class="fas fa-chart-pie me-2"></i>Visualizações
-                </button>
-            </li>
-        </ul>
-        
-        <!-- Conteúdo das Tabs -->
-        <div class="tab-content" id="estatisticasTabsContent">
-            <!-- Tab de Frequência -->
-            <div class="tab-pane fade show active" id="frequencia" role="tabpanel" aria-labelledby="frequencia-tab">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Números Mais Frequentes</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Número</th>
-                                                <th>Frequência</th>
-                                                <th>Percentagem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="numero">{{ stats_freq.numeros.mais_frequente }}</span></td>
-                                                <td>{{ stats_freq.numeros.frequencia_max }}</td>
-                                                <td>{{ (stats_freq.numeros.frequencia_max / stats_freq.numeros.media_frequencia * 100)|round(1) }}%</td>
-                                            </tr>
-                                            <!-- Aqui seriam adicionados mais números por ordem de frequência -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="mt-3">
-                                    <p class="mb-1"><strong>Média de frequência:</strong> {{ stats_freq.numeros.media_frequencia|round(1) }}</p>
-                                    <p class="mb-0"><strong>Número menos frequente:</strong> {{ stats_freq.numeros.menos_frequente }} ({{ stats_freq.numeros.frequencia_min }} vezes)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-warning text-dark">
-                                <h5 class="mb-0">Estrelas Mais Frequentes</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Estrela</th>
-                                                <th>Frequência</th>
-                                                <th>Percentagem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><span class="estrela">{{ stats_freq.estrelas.mais_frequente }}</span></td>
-                                                <td>{{ stats_freq.estrelas.frequencia_max }}</td>
-                                                <td>{{ (stats_freq.estrelas.frequencia_max / stats_freq.estrelas.media_frequencia * 100)|round(1) }}%</td>
-                                            </tr>
-                                            <!-- Aqui seriam adicionadas mais estrelas por ordem de frequência -->
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="mt-3">
-                                    <p class="mb-1"><strong>Média de frequência:</strong> {{ stats_freq.estrelas.media_frequencia|round(1) }}</p>
-                                    <p class="mb-0"><strong>Estrela menos frequente:</strong> {{ stats_freq.estrelas.menos_frequente }} ({{ stats_freq.estrelas.frequencia_min }} vezes)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-4">
-                    <div class="card shadow-sm">
-                        <div class="card-header bg-light">
-                            <h5 class="mb-0">Interpretação da Frequência</h5>
-                        </div>
-                        <div class="card-body">
-                            <p>A análise de frequência mostra quantas vezes cada número e estrela apareceu nos sorteios históricos do Euromilhões. Embora cada sorteio seja independente e todos os números tenham a mesma probabilidade teórica, alguns números tendem a aparecer mais vezes que outros ao longo do tempo.</p>
-                            <p class="mb-0">Esta análise é uma das bases para o nosso modelo de previsão, especialmente para o método baseado em frequência histórica.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab de Padrões -->
-            <div class="tab-pane fade" id="padroes" role="tabpanel" aria-labelledby="padroes-tab">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-success text-white">
-                                <h5 class="mb-0">Pares de Números Mais Frequentes</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Par</th>
-                                                <th>Frequência</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for par in stats_padroes.top_5_pares_numeros %}
-                                            <tr>
-                                                <td>{{ par.par }}</td>
-                                                <td>{{ par.frequencia }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="mb-0">Pares de Estrelas Mais Frequentes</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Par</th>
-                                                <th>Frequência</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for par in stats_padroes.top_5_pares_estrelas %}
-                                            <tr>
-                                                <td>{{ par.par }}</td>
-                                                <td>{{ par.frequencia }}</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row g-4 mt-4">
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-secondary text-white">
-                                <h5 class="mb-0">Distribuição de Paridade</h5>
-                            </div>
-                            <div class="card-body">
-                                <p>Distribuição de números pares nos sorteios:</p>
-                                <div class="table-responsive">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Números Pares</th>
-                                                <th>Frequência</th>
-                                                <th>Percentagem</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {% for num_pares, freq in stats_padroes.distribuicao_paridade.items() %}
-                                            <tr>
-                                                <td>{{ num_pares }}</td>
-                                                <td>{{ freq }}</td>
-                                                <td>{{ (freq / 2288 * 100)|round(1) }}%</td>
-                                            </tr>
-                                            {% endfor %}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card shadow-sm h-100">
-                            <div class="card-header bg-danger text-white">
-                                <h5 class="mb-0">Outros Padrões</h5>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Sorteios com números consecutivos
-                                        <span class="badge bg-primary rounded-pill">{{ stats_padroes.percentagem_sorteios_com_consecutivos|round(1) }}%</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Soma média dos números
-                                        <span class="badge bg-primary rounded-pill">{{ stats_padroes.media_soma_numeros|round(1) }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Soma mínima dos números
-                                        <span class="badge bg-primary rounded-pill">{{ stats_padroes.min_soma_numeros }}</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Soma máxima dos números
-                                        <span class="badge bg-primary rounded-pill">{{ stats_padroes.max_soma_numeros }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Tab de Visualizações -->
-            <div class="tab-pane fade" id="visualizacoes" role="tabpanel" aria-labelledby="visualizacoes-tab">
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-primary text-white">
-                                <h5 class="mb-0">Frequência dos Números</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ url_for('static', filename='img/frequencia_numeros.png') }}" alt="Gráfico de Frequência dos Números" class="img-fluid" onerror="this.src='https://via.placeholder.com/600x400?text=Gráfico+de+Frequência'">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-warning text-dark">
-                                <h5 class="mb-0">Frequência das Estrelas</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ url_for('static', filename='img/frequencia_estrelas.png') }}" alt="Gráfico de Frequência das Estrelas" class="img-fluid" onerror="this.src='https://via.placeholder.com/600x400?text=Gráfico+de+Frequência'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row g-4 mt-4">
-                    <div class="col-md-6">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-success text-white">
-                                <h5 class="mb-0">Distribuição da Soma dos Números</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ url_for('static', filename='img/distribuicao_soma.png') }}" alt="Distribuição da Soma dos Números" class="img-fluid" onerror="this.src='https://via.placeholder.com/600x400?text=Distribuição+da+Soma'">
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-info text-white">
-                                <h5 class="mb-0">Distribuição de Paridade</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ url_for('static', filename='img/distribuicao_paridade.png') }}" alt="Distribuição de Paridade" class="img-fluid" onerror="this.src='https://via.placeholder.com/600x400?text=Distribuição+de+Paridade'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card shadow-sm">
-                            <div class="card-header bg-secondary text-white">
-                                <h5 class="mb-0">Correlação entre Números</h5>
-                            </div>
-                            <div class="card-body text-center">
-                                <img src="{{ url_for('static', filename='img/correlacao_numeros.png') }}" alt="Correlação entre Números" class="img-fluid" onerror="this.src='https://via.placeholder.com/800x600?text=Correlação+entre+Números'">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <main>
+        <section class="hero">
+            <h1>{% if lang == 'en' %}EuroMillions Statistics{% else %}Estatísticas do Euromilhões{% endif %}</h1>
+            <p>{% if lang == 'en' %}Explore the statistical patterns and trends in EuroMillions draws.{% else %}Explore os padrões estatísticos e tendências nos sorteios do Euromilhões.{% endif %}</p>
+        </section>
 
-    <!-- Rodapé -->
-    <footer class="py-4 bg-dark text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <h5>Previsor Euromilhões</h5>
-                    <p class="mb-0">Uma ferramenta de análise estatística para o Euromilhões.</p>
-                    <p class="text-muted small">
-                        <em>Nota: Este é um projeto de demonstração. Os resultados são baseados em análise estatística e não garantem ganhos.</em>
-                    </p>
+        <section class="statistics-container">
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Number Frequency{% else %}Frequência dos Números{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/frequencia_numeros.png') }}" alt="{% if lang == 'en' %}Number Frequency Chart{% else %}Gráfico de Frequência dos Números{% endif %}">
                 </div>
-                <div class="col-md-6 text-md-end">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="/" class="text-white">Início</a></li>
-                        <li class="list-inline-item"><a href="/estatisticas" class="text-white">Estatísticas</a></li>
-                        <li class="list-inline-item"><a href="/relatorios" class="text-white">Relatórios</a></li>
-                        <li class="list-inline-item"><a href="/sobre" class="text-white">Sobre</a></li>
-                    </ul>
-                    <p class="mt-2 mb-0 text-muted">© 2025 Previsor Euromilhões</p>
-                </div>
+                <p>{% if lang == 'en' %}Distribution of main numbers in past draws.{% else %}Distribuição dos números principais nos sorteios passados.{% endif %}</p>
             </div>
-        </div>
+
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Star Frequency{% else %}Frequência das Estrelas{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/frequencia_estrelas.png') }}" alt="{% if lang == 'en' %}Star Frequency Chart{% else %}Gráfico de Frequência das Estrelas{% endif %}">
+                </div>
+                <p>{% if lang == 'en' %}Distribution of star numbers in past draws.{% else %}Distribuição dos números das estrelas nos sorteios passados.{% endif %}</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Number Correlation{% else %}Correlação entre Números{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/correlacao_numeros.png') }}" alt="{% if lang == 'en' %}Number Correlation Chart{% else %}Gráfico de Correlação entre Números{% endif %}">
+                </div>
+                <p>{% if lang == 'en' %}Correlation between main numbers in past draws.{% else %}Correlação entre os números principais nos sorteios passados.{% endif %}</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Parity Distribution{% else %}Distribuição de Paridade{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/distribuicao_paridade.png') }}" alt="{% if lang == 'en' %}Parity Distribution Chart{% else %}Gráfico de Distribuição de Paridade{% endif %}">
+                </div>
+                <p>{% if lang == 'en' %}Distribution of odd and even numbers in past draws.{% else %}Distribuição de números pares e ímpares nos sorteios passados.{% endif %}</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Sum Distribution{% else %}Distribuição da Soma{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/distribuicao_soma.png') }}" alt="{% if lang == 'en' %}Sum Distribution Chart{% else %}Gráfico de Distribuição da Soma{% endif %}">
+                </div>
+                <p>{% if lang == 'en' %}Distribution of the sum of main numbers in past draws.{% else %}Distribuição da soma dos números principais nos sorteios passados.{% endif %}</p>
+            </div>
+
+            <div class="stat-card">
+                <h2>{% if lang == 'en' %}Average Sum Evolution{% else %}Evolução da Soma Média{% endif %}</h2>
+                <div class="chart-container">
+                    <img src="{{ url_for('static', filename='img/evolucao_soma_media.png') }}" alt="{% if lang == 'en' %}Average Sum Evolution Chart{% else %}Gráfico de Evolução da Soma Média{% endif %}">
+                </div>
+                <p>{% if lang == 'en' %}Evolution of the average sum of main numbers over time.{% else %}Evolução da soma média dos números principais ao longo do tempo.{% endif %}</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 {% if lang == 'en' %}EuroMillions Predictor{% else %}Previsor Euromilhões{% endif %}</p>
     </footer>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/language-selector.js') }}"></script>
+    <script>
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('{{ url_for('static', filename='js/service-worker.js') }}')
+            .then(function(registration) {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+        }
+    </script>
 </body>
 </html>
